@@ -44,4 +44,4 @@ return contador
 }
 
 const resposta = EspirrosDoDragão("FFfFfFf")
-console.log(`Espirro Forte:${resposta.forte}\nEspirro Fraco:${resposta.fraco} `)
+console.log(`Espirro Forte:${resposta.forte}\nEspirro Fracote:${resposta.fraco} `)
