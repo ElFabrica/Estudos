@@ -38,7 +38,7 @@ function App() {
 
     //calcular erros
       const newErrors = y.map((yi, index) => yi - newPrev[index]);
-    setError(newErrors.map((a) => Number(a.toFixed(2))));
+    setError(newErrors.map((a) => Number(a)));
     console.log(newErrors)
      
 
@@ -52,14 +52,14 @@ function App() {
     
     console.log(NewSumErrorWithCoeficiente)
 
-    setSumErrorWithCoeficiente(Number(NewSumErrorWithCoeficiente.toFixed(2)))
+    setSumErrorWithCoeficiente(Number(NewSumErrorWithCoeficiente))
   
 
-    // New coeficiente w0
+    // New coeficientes
 
-    const NewValueW0 = newW0 + Number(aprendization) * sumError
+    const NewValueW0 = newW0 + (Number(aprendization) * SumError)
     setNewW0(NewValueW0)
-    const NewValueW1 = newW1 + Number(aprendization) * NewSumErrorWithCoeficiente
+    const NewValueW1 = newW1 + (Number(aprendization) * NewSumErrorWithCoeficiente)
     setNewW1(NewValueW1)
 
 
