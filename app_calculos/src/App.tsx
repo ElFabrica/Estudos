@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState, type HTMLProps } from 'react'
 import './App.css'
 
 function App() {
@@ -16,16 +16,45 @@ function App() {
   const [sumErrorWithCoeficiente, setSumErrorWithCoeficiente] = useState<number>(0);
   const [newW0, setNewW0] = useState<number>();
   const [newW1, setNewW1] = useState<number>();
+
+  const inputRefX = useRef<HTMLInputElement>(null)
+  const inputRefY = useRef<HTMLInputElement>(null)
   
   function handleAddX(){
+    if(!inputRefX.current){
+      return
+    }
+    
     const numberX = Number(currentX)
+
+    if(isNaN(numberX)){
+      setCurrentX("")
+      alert("Número inválido")
+      return
+    }
+
     setX((x) => [...x, numberX])
     setCurrentX("")
+    inputRefX.current.focus()
   }
+
   function handleAddY(){
+    if(!inputRefY.current){
+      return
+    }
     const numberY = Number(currentY)
+
+    if(isNaN(numberY)){
+      setCurrentX("")
+      alert("Número inválido")
+      return
+    }
+
     setY((y) => [...y, numberY])
     setCurrentY("")
+
+    inputRefY.current.focus()
+
   }
 
 
@@ -69,11 +98,13 @@ function App() {
   return (
     <>
       <div>
-         Adicione os coeficientes X, separando por vírgula: 
+         Adicione os coeficientes X: 
          
-         <div className='flex flex-row gap-2'>
-          <input type="text" className='border-1 border-gray-400 rounded-md' value={currentX} 
+         <div className='flex flex-row gap-2 items-center justify-center'>
+          <input type="text" className='border-1 border-gray-400 rounded-md p-2' value={currentX} 
           onChange={(e) => setCurrentX(e.target.value) }
+          ref={inputRefX} 
+
           />
 
           <button 
@@ -81,35 +112,37 @@ function App() {
           onClick={handleAddX}> Adicionar X
           </button>
           </div>
-         Adicione os coeficientes y: 
+         Adicione os coeficientes Y: 
 
-         <div className='flex flex-row gap-2'>
-          <input type="text" className='border-1 border-gray-400 rounded-md' value={currentY} 
+         <div className='flex flex-row gap-2 justify-center'>
+          <input type="text" className='border-1 border-gray-400 rounded-md p-2' 
+          value={currentY}
+          ref={inputRefY} 
           onChange={(e) => setCurrentY(e.target.value) }
           />
 
           <button 
           className='bg-gray-400 rounded-sm text-white p-2'
-          onClick={handleAddY}> Adicionar y
+          onClick={handleAddY}> Adicionar Y
           </button>
           </div>
 
          <div className='flex flex-col gap-2'>
 
          Adicione os coeficientes W0: 
-          <input type="text" className='border-1 border-gray-400 rounded-md' value={w0} 
+          <input type="text" className='border-1 border-gray-400 rounded-md p-2' value={w0} 
           onChange={(e) => setW0(e.target.value) }
           />
          Adicione os coeficientes W1: 
 
         
-          <input type="text" className='border-1 border-gray-400 rounded-md' value={w1} 
+          <input type="text" className='border-1 border-gray-400 rounded-md p-2' value={w1} 
           onChange={(e) => setW1(e.target.value) }
           />
          Adicione os a taxa de aprendizagem: 
 
         
-          <input type="text" className='border-1 border-gray-400 rounded-md' value={aprendization} 
+          <input type="text" className='border-1 border-gray-400 rounded-md p-2' value={aprendization} 
           onChange={(e) => setAprendization(e.target.value) }
           />
 
@@ -117,12 +150,23 @@ function App() {
           className='bg-gray-400 rounded-sm text-white p-3'
           onClick={handleCalculateErrors}> Calcular coeficientes
           </button>
-          <div>
+          <div className='flex flex-col gap-1'>
           <p>W0: {w0}</p>
           <p>W1: {w1}</p>
           <p>Aprendizagem: {aprendization}</p>
+          <div className='flex flex-row justify-center items-center gap-3'>
           <p>X: [{x.join(",")} ]</p>
-          <p>Y: [{y.join(",")} ]</p>
+          <button className='bg-gray-400 px-2 py-1 rounded cursor-pointer'
+          onClick={() => setX(x.splice(0,x.length-1))}
+          >Limpar</button>
+          </div>
+          <div className='flex flex-row justify-center items-center gap-3'>
+            <p>Y: [{y.join(",")} ]</p>
+            <button className='bg-gray-400 px-2 py-1 rounded cursor-pointer' 
+            onClick={() => setY(y.splice(0, y.length-1))}>
+              Limpar
+            </button>
+            </div>
         <p>Previsões: {prev.join(",")}</p>
         <p>Erros: {error.join(",")}</p>
         <p>Soma dos erros: {sumError}</p>
